@@ -13,7 +13,7 @@ DEMO: facial expression recognition with Keras model
 uv version
 uv self update
 uv python install 3.12
-uv venv --python 3.12.5
+uv venv --python 3.12.6
 uv python pin pypy@3.12
 uv lock
 uv sync --refresh
