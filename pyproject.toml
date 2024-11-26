@@ -11,6 +11,7 @@ dependencies = [
     "pydantic",
     "pydantic-settings",
     "pyyaml",
+    "scipy",
     "seaborn",
     "structlog",
     "tensorflow",
@@ -27,6 +28,9 @@ readme = "README.md"
 repository = "https://github.com/averille-demo/facial-expression-classifier"
 requires-python = ">=3.12"
 version = "1.0.0"
+
+[project.scripts]
+facial-expression-classifier = "facial_expression_classifier:run"
 
 [tool.uv]
 cache-dir = "./.uv_cache"
