@@ -21,10 +21,10 @@ uv run pre-commit install --install-hooks
 ```
 
 ### [FER-2013 dataset](https://www.kaggle.com/datasets/msambare/fer2013/code)
-Consists of 48x48 pixel grayscale images of human faces
-automatically registered so each face is centered and occupies similar amount of space in each image
-contains 24400 images: with 22968 examples in training and 1432 examples in test
-one of seven categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral)
+* consists of 48x48 pixel grayscale images of human faces
+* automatically registered so each face is centered and occupies similar amount of space in each image
+* contains 24400 images: with 22968 examples in training and 1432 examples in test
+* one of seven categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral)
 
 ### Train Model:
 ```
