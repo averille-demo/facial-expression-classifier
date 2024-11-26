@@ -1,3 +1,23 @@
+# Hidden junk
+.DS_Store
+desktop.ini
+*._
+
+# Temp files
+*~*
+*.bak
+*.lock
+*.log
+*.ipynb
+
+# Images
+data/**/*.jpg
+
+# Development environments
+.idea*/
+.venv*/
+.uv_cache/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

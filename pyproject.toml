@@ -1,0 +1,98 @@
+[project]
+authors = [
+    {email = "cloud.apps@averille.dev", name = "Emile Averill"},
+]
+dependencies = [
+    "click",
+    "h5py",
+    "keras",
+    "pandas",
+    "pendulum",
+    "pydantic",
+    "pydantic-settings",
+    "pyyaml",
+    "seaborn",
+    "structlog",
+    "tensorflow",
+]
+description = "DEMO: facial expression classifier with Keras model"
+keywords = ["expressions", "facial"]
+license = {file = "LICENSE"}
+name = "facial-expression-classifier"
+package-mode = false
+packages = [
+    {from = "src", include = "facial_expression_classifier"},
+]
+readme = "README.md"
+repository = "https://github.com/averille-demo/facial-expression-classifier"
+requires-python = ">=3.12"
+version = "1.0.0"
+
+[tool.uv]
+cache-dir = "./.uv_cache"
+dev-dependencies = [
+    "black",
+    "flake8",
+    "mypy",
+    "pre-commit",
+    "pycodestyle",
+    "pydocstyle",
+    "pylint",
+    "ruff",
+    "toml-sort",
+]
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".idea",
+    ".ruff_cache",
+    ".uv_cache",
+    ".venv",
+]
+line-length = 120
+src = ["src", "test"]
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = ["E203"]
+select = [
+    "E", # pycodestyle (error)
+    "F", # pyflakes
+    "I", # isort imports
+    "PL", # pylint
+    "W", # pycodestyle (warning)
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.isort]
+known-third-party = ["src"]
+
+[tool.ruff.format]
+exclude = ["*.pyi"]
+line-ending = "lf"
+
+[tool.mypy]
+check_untyped_defs = true
+disable_error_code = [
+    "prop-decorator",
+    "union-attr",
+]
+pretty = true
+python_version = "3.12"
+show_error_codes = true
+
+[tool.tomlsort]
+all = true
+in_place = true
+no_sort_tables = true
+sort_inline_arrays = true
+sort_inline_tables = true
+spaces_indent_inline_array = 4
+trailing_comma_inline_array = true
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
