@@ -3,12 +3,14 @@
 import json
 
 import click
+import pandas as pd
 import pendulum
 import structlog
 from keras.src.layers import BatchNormalization, Conv2D, Dense, Dropout, Flatten, Input, MaxPooling2D
 from keras.src.legacy.preprocessing.image import ImageDataGenerator
 from keras.src.models.sequential import Sequential
 from keras.src.optimizers import Adam
+from keras.src.saving import load_model
 
 from facial_expression_classifier.util.settings import (
     MAX_BATCH_SIZE,
@@ -17,6 +19,7 @@ from facial_expression_classifier.util.settings import (
     MIN_EPOCHS,
     ModelSettings,
 )
+from facial_expression_classifier.util.vizualizations import plot_accuracy, plot_confusion_matrix, plot_loss
 
 structlog.configure(
     cache_logger_on_first_use=True,
@@ -156,7 +159,7 @@ def fit_model(
     "--epochs",
     "-e",
     show_default=True,
-    default=1,
+    default=60,
     help=f"choose number of epochs between {MIN_EPOCHS} and {MAX_EPOCHS}",
 )
 @click.option(
@@ -171,13 +174,22 @@ def fit_model(
     "-t",
     is_flag=True,
     show_default=True,
-    default=True,
+    default=False,
     help="apply boolean flag to train model",
+)
+@click.option(
+    "--plot-history",
+    "-p",
+    is_flag=True,
+    show_default=True,
+    default=True,
+    help="apply boolean flag to plot model training history",
 )
 def trigger_pipeline(
     epochs: int,
     batch_size: int,
     train_model: bool,
+    plot_history: bool,
 ):
     """Driver for pipeline."""
     settings = ModelSettings(epochs=epochs, batch_size=batch_size, version="1.0.0")
@@ -195,7 +207,30 @@ def trigger_pipeline(
             train_generator=train_generator,
             validation_generator=validation_generator,
         )
-
+    if plot_history:
+        # restore model from file
+        model: Sequential = load_model(settings.model_file)
+        log.info(f"loaded: {settings.model_file.name}")
+        # restore training history from file
+        history = json.loads(settings.history_file.read_text(encoding="utf-8"))
+        df = pd.DataFrame.from_dict(history, orient="columns")
+        df.rename(
+            columns={
+                "loss": "training_loss",
+                "val_loss": "validation_loss",
+                "accuracy": "training_accuracy",
+                "val_accuracy": "validation_accuracy",
+            },
+            inplace=True,
+        )
+        plot_confusion_matrix(
+            validation_labels=validation_generator.classes,
+            validation_predictions=model.predict(validation_generator),
+            class_names=settings.labels,
+            path=settings.dst_plot_folder.joinpath("confusion_matrix.png"),
+        )
+        plot_accuracy(df=df, path=settings.dst_plot_folder.joinpath("accuracy.png"))
+        plot_loss(df=df, path=settings.dst_plot_folder.joinpath("loss.png"))
     print(f"completed: '{settings.model_name}' {pendulum.now().to_datetime_string()}")
 
 

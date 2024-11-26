@@ -21,11 +21,23 @@ uv run pre-commit install --install-hooks
 ```
 
 ### [FER-2013 dataset](https://www.kaggle.com/datasets/msambare/fer2013/code)
-Consists of 48x48 pixel grayscale images of faces that have been automatically registered to be centred and occupy a similar amount of space in each image.
-The dataset contains 24400 images, with 22968 examples in the training set and 1432 examples in public test set.
+Consists of 48x48 pixel grayscale images of human faces
+automatically registered so each face is centered and occupies similar amount of space in each image
+contains 24400 images: with 22968 examples in training and 1432 examples in test
 one of seven categories (0=Angry, 1=Disgust, 2=Fear, 3=Happy, 4=Sad, 5=Surprise, 6=Neutral)
 
 ### Train Model:
 ```
 uv run python src/facial_expressions_classifier/run.py --epochs 10 --batch_size 30 --train_model
 ```
+
+### Plot Visualizations:
+```
+uv run ./src/facial_expressions_classifier/run.py --plot-history
+```
+
+![image](./plots/accuracy.png)
+
+![image](./plots/loss.png)
+
+![image](./plots/confusion_matrix.png)
